@@ -32,7 +32,7 @@ implements question_response_answer_comparer {
         parent::__construct(new question_first_matching_answer_grading_strategy($this));
     }
 
-    
+
 
     /**
      * {@inheritDoc}
@@ -47,7 +47,11 @@ implements question_response_answer_comparer {
      * @see question_definition::get_correct_response()
      */
     public function get_correct_response() {
-        return array('answer' => '');
+        $response = parent::get_correct_response();
+        if ($response) {
+            $response['answer'] = $this->clean_response($response['answer']);
+        }
+        return $response;
     }
 
     /**
@@ -56,7 +60,8 @@ implements question_response_answer_comparer {
      * @return string the answer
      */
     private function get_answer(array $response) {
-        return isset($response['answer']) ? $response['answer'] : '';
+        //return isset($response['answer']) ? $response['answer'] : '';
+        return this->answers ;
     }
 
     public function summarise_response(array $response) {
@@ -68,7 +73,10 @@ implements question_response_answer_comparer {
     }
 
     public function get_validation_error(array $response) {
-        return '';
+        if ($this->is_gradable_response($response)) {
+            return '';
+        }
+        return get_string('pleaseenterananswer', 'qtype_booleanlogic');
     }
 
     public function is_same_response(array $prevresponse, array $newresponse) {
@@ -78,5 +86,20 @@ implements question_response_answer_comparer {
     public function grade_response(array $response) {
         $grade = 0;
         return array($grade, question_state::graded_state_for_fraction($grade));
+    }
+
+
+    public function clean_response($answer) {
+        // Break the string on non-escaped asterisks.
+        $bits = preg_split('/(?<!\\\\)\*/', $answer);
+
+        // Unescape *s in the bits.
+        $cleanbits = array();
+        foreach ($bits as $bit) {
+            $cleanbits[] = str_replace('\*', '*', $bit);
+        }
+
+        // Put it back together with spaces to look nice.
+        return trim(implode(' ', $cleanbits));
     }
 }
