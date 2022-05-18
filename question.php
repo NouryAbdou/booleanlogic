@@ -20,7 +20,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-class qtype_booleanlogic_question extends question_graded_automatically {
+class qtype_booleanlogic_question  extends question_graded_by_strategy
+implements question_response_answer_comparer {
+
+     /** @var boolean whether answers should be graded case-sensitively. */
+     public $usecase;
+     /** @var array of question_answer. */
+     public $answers = array();
+
+     public function __construct() {
+        parent::__construct(new question_first_matching_answer_grading_strategy($this));
+    }
+
+    
 
     /**
      * {@inheritDoc}
