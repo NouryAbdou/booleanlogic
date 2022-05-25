@@ -36,6 +36,7 @@ class qtype_booleanlogic_edit_form extends question_edit_form {
      * @see question_edit_form::definition_inner()
      */
     protected function definition_inner($mform) {
+        $mform->addElement('textarea', 'teachercorrection', 'Correction pour la question'); // On ajoute un champ texte pour la correction, qui s'appelle bien "teachercorrection"
     }
 
     public function validation($submitteddata, $files) {

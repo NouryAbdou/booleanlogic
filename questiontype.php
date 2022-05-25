@@ -24,6 +24,8 @@ class qtype_booleanlogic extends question_type {
      * @see question_type::extra_question_fields()
      */
     public function extra_question_fields() {
-        return array();
+        return array("question_booleanlogic", // le nom de la table de la BD
+        "teachercorrection");
     }
+    
 }
