@@ -20,17 +20,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-class qtype_booleanlogic_question  extends question_graded_by_strategy
-implements question_response_answer_comparer {
+class qtype_booleanlogic_question  extends question_graded_automatically {
 
      /** @var boolean whether answers should be graded case-sensitively. */
      public $usecase;
      /** @var array of question_answer. */
      public $answers = array();
 
-     public function __construct() {
-        parent::__construct(new question_first_matching_answer_grading_strategy($this));
-    }
+     
 
 
 
@@ -47,10 +44,10 @@ implements question_response_answer_comparer {
      * @see question_definition::get_correct_response()
      */
     public function get_correct_response() {
-        $response = parent::get_correct_response();
-        if ($response) {
+        $response = array();//parent::get_correct_response();
+        //if ($response) {
             $response['answer'] = $this->clean_response($response['answer']);
-        }
+        //}
         return $response;
     }
 
@@ -60,8 +57,8 @@ implements question_response_answer_comparer {
      * @return string the answer
      */
     private function get_answer(array $response) {
-        //return isset($response['answer']) ? $response['answer'] : '';
-        return this->answers ;
+        return isset($response['answer']) ? $response['answer'] : '';
+        //return $this->answers ;
     }
 
     public function summarise_response(array $response) {
@@ -86,20 +83,23 @@ implements question_response_answer_comparer {
     public function grade_response(array $response) {
         $grade = 0;
         return array($grade, question_state::graded_state_for_fraction($grade));
+
+
+        // $this->teachercorrection == $response['answer'];
     }
 
 
     public function clean_response($answer) {
         // Break the string on non-escaped asterisks.
-        $bits = preg_split('/(?<!\\\\)\*/', $answer);
+        //$bits = preg_split('/(?<!\\\\)\*/', $answer);
 
         // Unescape *s in the bits.
-        $cleanbits = array();
-        foreach ($bits as $bit) {
-            $cleanbits[] = str_replace('\*', '*', $bit);
-        }
+        //$cleanbits = array();
+        //foreach ($bits as $bit) {
+        //    $cleanbits[] = str_replace('\*', '*', $bit);
+        //}
 
         // Put it back together with spaces to look nice.
-        return trim(implode(' ', $cleanbits));
+        //return trim(implode(' ', $cleanbits));
     }
 }
