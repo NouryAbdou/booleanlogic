@@ -32,9 +32,9 @@ $string['notenoughanswers'] = 'This type of question requires at least {$a} answ
 $string['pleaseenterananswer'] = 'Please enter an answer.';
 $string['pluginname'] = 'Boolean logic';
 $string['pluginname_help'] = 'In response to a question (that may include an image) the respondent types a word or short phrase. There may be several possible correct answers, each with a different grade. If the "Case sensitive" option is selected, then you can have different scores for "Word" or "word".';
-$string['pluginname_link'] = 'question/type/shortanswer';
-$string['pluginnameadding'] = 'Adding a short answer question';
-$string['pluginnameediting'] = 'Editing a Short answer question';
+$string['pluginname_link'] = 'question/type/booleanlogic';
+$string['pluginnameadding'] = 'Adding a boolean logic question';
+$string['pluginnameediting'] = 'Editing a boolean logic question';
 $string['pluginnamesummary'] = 'Allows a response of one or a few words that is graded by comparing against various model answers, which may contain wildcards.';
 $string['privacy:metadata'] = 'The boolean logic question type plugin does not store any personal data.';
 

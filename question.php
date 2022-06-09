@@ -27,10 +27,6 @@ class qtype_booleanlogic_question  extends question_graded_automatically {
      /** @var array of question_answer. */
      public $answers = array();
 
-     
-
-
-
     /**
      * {@inheritDoc}
      * @see question_definition::get_expected_data()
@@ -44,12 +40,14 @@ class qtype_booleanlogic_question  extends question_graded_automatically {
      * @see question_definition::get_correct_response()
      */
     public function get_correct_response() {
-        $response = array();//parent::get_correct_response();
-        //if ($response) {
+
+        $response['answer'] = $this->teachercorrection ;
+        if ($response) {
             $response['answer'] = $this->clean_response($response['answer']);
-        //}
+        }
         return $response;
     }
+
 
     /**
      * Wrapper to get the answer in a response object, handling unset variable.
@@ -57,12 +55,24 @@ class qtype_booleanlogic_question  extends question_graded_automatically {
      * @return string the answer
      */
     private function get_answer(array $response) {
-        return isset($response['answer']) ? $response['answer'] : '';
-        //return $this->answers ;
+        //return isset($response['answer']) ? $response['answer'] : '';
+        return $this->answers ;
     }
 
     public function summarise_response(array $response) {
-        return isset($response['answer']) ? $response['answer'] : '';
+        if (isset($response['answer'])) {
+            return $response['answer'];
+        } else {
+            return null;
+        }
+    }
+
+    public function un_summarise_response(string $summary) {
+        if (!empty($summary)) {
+            return ['answer' => $summary];
+        } else {
+            return [];
+        }
     }
 
     public function is_complete_response(array $response) {
@@ -81,25 +91,30 @@ class qtype_booleanlogic_question  extends question_graded_automatically {
     }
 
     public function grade_response(array $response) {
-        $grade = 0;
+        $answer = $this->teachercorrection ;
+        if ($answer == $response['answer']){
+            $grade = 1;
+        }
+        else {
+            $grade = 0;
+        }
         return array($grade, question_state::graded_state_for_fraction($grade));
 
 
-        // $this->teachercorrection == $response['answer'];
     }
 
 
     public function clean_response($answer) {
         // Break the string on non-escaped asterisks.
-        //$bits = preg_split('/(?<!\\\\)\*/', $answer);
+        $bits = preg_split('/(?<!\\\\)\*/', $answer);
 
         // Unescape *s in the bits.
-        //$cleanbits = array();
-        //foreach ($bits as $bit) {
-        //    $cleanbits[] = str_replace('\*', '*', $bit);
-        //}
+        $cleanbits = array();
+        foreach ($bits as $bit) {
+            $cleanbits[] = str_replace('\*', '*', $bit);
+        }
 
-        // Put it back together with spaces to look nice.
-        //return trim(implode(' ', $cleanbits));
+         //Put it back together with spaces to look nice.
+        return trim(implode(' ', $cleanbits));
     }
 }

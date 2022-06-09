@@ -9,8 +9,6 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id."/>
         <FIELD NAME="teachercorrection" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Correction from the teacher."/>
-        <FIELD NAME="teachercorrection2" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Correction "/>
-
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
